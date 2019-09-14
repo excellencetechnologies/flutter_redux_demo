@@ -7,8 +7,21 @@ import 'package:flutter_redux_demo/redux/reducer.dart';
 
 void main() => runApp(MyApp());
 
+class LogMiddleware implements MiddlewareClass<AppState> {
+  @override
+  void call(Store<AppState> store, dynamic action, NextDispatcher next) {
+    print("===MIDDLEWARE===");
+    print(action);
+    next(action); // very important :)
+  }
+}
+
 final store = Store<AppState>(appReducer,
-    initialState: AppState.fromList(List.from(["Item1", "Item2"])));
+    initialState: AppState.fromList(List.from(["Item1", "Item2"])),
+    middleware: [
+      LogMiddleware()
+    ]
+    );
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
