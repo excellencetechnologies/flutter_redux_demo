@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux_demo/widget/list.dart';
+import 'package:flutter_redux_demo/redux/containers/list.dart';
 import 'package:flutter_redux_demo/widget/add.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -13,10 +13,10 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Flexible(
-              child: AddForm(),
+              child: AddFormViewModel(),
             ),
             Expanded(
-              child: ListWidget(),
+              child: ListContainer(),
             )
           ],
         ));
