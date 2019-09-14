@@ -10,3 +10,7 @@ class MarkItemAction {
   final bool read;
   MarkItemAction(this.item, this.read);
 }
+
+class FetchItemAction{
+  FetchItemAction();
+}

@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_redux_demo/redux/app_state.dart';
+import 'package:flutter_redux_demo/redux/middleware/fetch_list.dart';
+import 'package:flutter_redux_demo/redux/middleware/log.dart';
 import 'package:flutter_redux_demo/screen/home.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux_demo/redux/reducer.dart';
 
 void main() => runApp(MyApp());
 
-class LogMiddleware implements MiddlewareClass<AppState> {
-  @override
-  void call(Store<AppState> store, dynamic action, NextDispatcher next) {
-    print("===MIDDLEWARE===");
-    print(action);
-    next(action); // very important :)
-  }
-}
-
 final store = Store<AppState>(appReducer,
-    initialState: AppState.fromList(List.from(["Item1", "Item2"])),
+    initialState: AppState.empty,
     middleware: [
-      LogMiddleware()
+      LogMiddleware(),
+      FetchListMiddleware()
     ]
     );
 
