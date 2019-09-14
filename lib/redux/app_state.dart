@@ -6,5 +6,8 @@ class AppState {
   static var empty = AppState(new List());
 
   AppState(this.items);
+  AppState.fromList(List<String> list) {
+    this.items = list.map((f) => new Item(f)).toList();
+  }
   AppState.fromItems(this.items);
 }

@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_demo/models/item.dart';
+import 'package:flutter_redux_demo/redux/app_state.dart';
 
 class ListWidget extends StatelessWidget {
-  final List<String> data = ["List Item1", "List Item2", "List Item3", "List Item4"];
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text('${data[index]}'),
-          );
-        });
+    return StoreConnector<AppState, List<Item>>(
+      converter: (store) => store.state.items,
+      builder: (BuildContext context, List<Item> list) {
+        return ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text('${list[index].text}'),
+              );
+            });
+      },
+    );
   }
 }
