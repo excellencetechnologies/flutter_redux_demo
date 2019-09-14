@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_demo/models/item.dart';
+import 'package:flutter_redux_demo/redux/actions.dart';
+import 'package:flutter_redux_demo/redux/app_state.dart';
+
+class AddFormViewModel extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, OnItemAddedCallback>(converter: (store) {
+      return (text) => store.dispatch(AddItemAction(Item(text)));
+    }, builder: (BuildContext context, callback) {
+      return AddForm(callback);
+    });
+  }
+}
 
 class AddForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final _controller = TextEditingController();
+
+  final OnItemAddedCallback callback;
+
+  AddForm(this.callback);
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +34,8 @@ class AddForm extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: TextFormField(
+                  controller: _controller,
                   decoration: InputDecoration(labelText: 'Enter list item'),
-                  // The validator receives the text that the user has entered.
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Please enter some text';
@@ -27,12 +47,9 @@ class AddForm extends StatelessWidget {
               Expanded(
                   child: RaisedButton(
                       onPressed: () {
-                        // Validate returns true if the form is valid, or false
-                        // otherwise.
                         if (_formKey.currentState.validate()) {
-                          // If the form is valid, display a Snackbar.
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text('Processing Data')));
+                          callback(_controller.text);
+                          _formKey.currentState.reset();
                         }
                       },
                       child: Text('Add')))
@@ -42,3 +59,5 @@ class AddForm extends StatelessWidget {
         );
   }
 }
+
+typedef OnItemAddedCallback = Function(String text);
